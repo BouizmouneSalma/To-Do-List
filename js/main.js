@@ -59,6 +59,14 @@ addForm.addEventListener("submit", (event) => {
     `;
 
 
+    if (category === "to-do-list") {
+        toDoList.appendChild(taskElement);
+    } else if (category === "in-progress-list") {
+        inProgressList.appendChild(taskElement);
+    } else if (category === "done-list") {
+        doneList.appendChild(taskElement);
+    }
+
     updateTaskCounts();
     addForm.reset();
     addForm.classList.add("hidden");
