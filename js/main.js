@@ -20,5 +20,35 @@ cancelBtn.addEventListener("click", () => {
     modal.classList.add("hidden"); // Cache le modal
 });
 
+function updateTaskCounts() {
+    toDoCount.textContent = `(${toDoList.childElementCount})`;
+    inProgressCount.textContent = `(${inProgressList.childElementCount})`;
+    doneCount.textContent = `(${doneList.childElementCount})`;
+}
 
+addForm.addEventListener("submit", (event) => {
+    event.preventDefault();
 
+    const title = document.getElementById("task-title").value;
+    const date = document.getElementById("task-date").value;
+    const priority = document.getElementById("task-priority").value;
+    const category = document.getElementById("task-category").value;
+    const description = document.getElementById("task-description").value;
+
+    const taskElement = document.createElement("div");
+    taskElement.classList.add("p-4", "rounded", "border", "text-gray");
+
+    
+
+   
+    updateTaskCounts();
+    addForm.reset();
+    addForm.classList.add("hidden");
+    modal.classList.add("hidden");
+
+    
+    taskElement.querySelector(".delete-task").addEventListener("click", () => {
+        taskElement.remove();
+        updateTaskCounts();
+    });
+});
