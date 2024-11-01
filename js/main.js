@@ -38,7 +38,7 @@ addForm.addEventListener("submit", (event) => {
     const taskElement = document.createElement("div");
     taskElement.classList.add("p-4", "rounded", "border", "text-gray");
 
-    
+  
     if (priority === "P1") {
         taskElement.classList.add("border-red-500");
     } else if (priority === "P2") {
@@ -47,7 +47,18 @@ addForm.addEventListener("submit", (event) => {
         taskElement.classList.add("border-green-500");
     }
 
-   
+    // Faire innerHTml pour la creation du div task
+    taskElement.innerHTML = `
+        <h3 class="font-bold">${title}</h3>
+        <p class="text-sm text-green-500">${date}</p>
+        <p class="text-sm text-gray-600">${description}</p>
+        <div class="flex space-x-2 mt-2">
+            <button class="delete-task bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+            <button class="edit-task bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+        </div>
+    `;
+
+
     updateTaskCounts();
     addForm.reset();
     addForm.classList.add("hidden");
