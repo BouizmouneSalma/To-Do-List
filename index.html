@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-8">
+    <div class="flex justify-evenly mb-10">
+        <button id="task" class="bg-blue-500 text-white px-4 py-2 text-lg rounded-lg">Add Task +</button>
+        <input class="w-1/2 px-8 py-2 border border-black-300 rounded-md" type="text" placeholder="Rechercher une tâche...">
+        <button class="bg-blue-500 text-white px-4 py-2 text-lg rounded-lg">Add Multiple +</button>
+    </div>
+
+    <section class="grid grid-cols-1 gap-8 row-gap md:grid-cols-3" id="test">
+        <div class="bg-white p-4 rounded shadow">
+            <h3 class="border-b-4 border-red-500 pb-2 mb-8">To Do<span id="to-do-count">| 0</span></h3>
+            <div id="to-do-list" class="space-y-2">
+            </div>
+        </div>
+        <div class="bg-white p-4 rounded shadow">
+            <h3 class="border-b-4 border-blue-500 pb-2 mb-4">Doing<span id="in-progress-count">| 0</span></h3>
+            <div id="in-progress-list" class="space-y-2"></div>
+        </div>
+        <div class="bg-white p-4 rounded shadow">
+            <h3 class="border-b-4 border-green-500 pb-2 mb-4">Done<span id="done-count">| 0</span></h3>
+            <div id="done-list" class="space-y-2 "></div>
+        </div>
+    </section>
+
+   </body>
+
+</html>
