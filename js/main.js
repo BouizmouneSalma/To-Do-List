@@ -39,6 +39,13 @@ addForm.addEventListener("submit", (event) => {
     taskElement.classList.add("p-4", "rounded", "border", "text-gray");
 
     
+    if (priority === "P1") {
+        taskElement.classList.add("border-red-500");
+    } else if (priority === "P2") {
+        taskElement.classList.add("border-yellow-500");
+    } else if (priority === "P3") {
+        taskElement.classList.add("border-green-500");
+    }
 
    
     updateTaskCounts();
