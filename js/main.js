@@ -1,4 +1,4 @@
-const addTaskBtn = document.getElementById("task");
+const addBtn = document.getElementById("task");
 const addForm = document.getElementById("task-form");
 const cancelBtn = document.getElementById("cancel");
 const toDoList = document.getElementById("to-do-list");
@@ -10,14 +10,18 @@ const toDoCount = document.getElementById("to-do-count");
 const inProgressCount = document.getElementById("in-progress-count");
 const doneCount = document.getElementById("done-count");
 
-addTaskBtn.addEventListener("click", () => {
-    modal.classList.remove("hidden"); // remove  hidde
-    addForm.classList.remove("hidden"); // Affiche le formulaire
+let isEditMode = false;
+
+let Tcurrent = null;
+
+addBtn.addEventListener("click", () => {
+    isEditMode = false;
+    modal.classList.remove("hidden");
+    addForm.reset();
 });
 
 cancelBtn.addEventListener("click", () => {
-    addForm.classList.add("hidden"); // Cache le formulaire
-    modal.classList.add("hidden"); // Cache le modal
+    modal.classList.add("hidden");
 });
 
 function updateTaskCounts() {
@@ -35,46 +39,79 @@ addForm.addEventListener("submit", (event) => {
     const category = document.getElementById("task-category").value;
     const description = document.getElementById("task-description").value;
 
-    const taskElement = document.createElement("div");
-    taskElement.classList.add("p-4", "rounded", "border", "text-gray");
+    if (isEditMode && Tcurrent) {
+        
+        Tcurrent.querySelector(".task-title").textContent = title;
+        Tcurrent.querySelector(".task-date").textContent = date;
+        Tcurrent.querySelector(".task-desc").textContent = description;
 
-  
-    if (priority === "P1") {
-        taskElement.classList.add("border-red-500");
-    } else if (priority === "P2") {
-        taskElement.classList.add("border-yellow-500");
-    } else if (priority === "P3") {
-        taskElement.classList.add("border-green-500");
-    }
+        Tcurrent.classList.remove("border-red-500", "border-yellow-500", "border-green-500");
+        if (priority === "P1") {
+            Tcurrent.classList.add("border-red-500");
+        } else if (priority === "P2") {
+            Tcurrent.classList.add("border-yellow-500");
+        } else if (priority === "P3") {
+            Tcurrent.classList.add("border-green-500");
+        }
 
-    // Faire innerHTml pour la creation du div task
-    taskElement.innerHTML = `
-        <h3 class="font-bold">${title}</h3>
-        <p class="text-sm text-green-500">${date}</p>
-        <p class="text-sm text-gray-600">${description}</p>
-        <div class="flex space-x-2 mt-2">
-            <button class="delete-task bg-red-500 text-white px-2 py-1 rounded">Delete</button>
-            <button class="edit-task bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
-        </div>
-    `;
+        isEditMode = false;
+        Tcurrent = null;
+    } else {
+        const taskElement = document.createElement("div");
+        taskElement.classList.add("p-4", "rounded", "border", "shadow-sm", "bg-white");
 
+        // Ajout de border en fonction de la priorité
+        if (priority === "P1") {
+            taskElement.classList.add("border-red-500");
+        } else if (priority === "P2") {
+            taskElement.classList.add("border-yellow-500");
+        } else if (priority === "P3") {
+            taskElement.classList.add("border-green-500");
+        }
 
-    if (category === "to-do-list") {
-        toDoList.appendChild(taskElement);
-    } else if (category === "in-progress-list") {
-        inProgressList.appendChild(taskElement);
-    } else if (category === "done-list") {
-        doneList.appendChild(taskElement);
-    }
+        taskElement.innerHTML = `
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-gray-800 task-title">${title}</h3>
+                <p class="text-sm text-green-500 task-date">${date}</p>
+            </div>
+            <p class="text-sm text-gray-600 task-desc mt-1">${description}</p>
+            <div class="flex space-x-2 mt-2">
+                <button class="delete-task bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Delete</button>
+                <button class="edit-task bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600">Edit</button>
+            </div>
+        `;
 
-    updateTaskCounts();
-    addForm.reset();
-    addForm.classList.add("hidden");
-    modal.classList.add("hidden");
+        // Ajout de la tâche dans la loiste de la tache
+        if (category === "to-do-list") {
+            toDoList.appendChild(taskElement);
+        } else if (category === "in-progress-list") {
+            inProgressList.appendChild(taskElement);
+        } else if (category === "done-list") {
+            doneList.appendChild(taskElement);
+        }
 
-    
-    taskElement.querySelector(".delete-task").addEventListener("click", () => {
-        taskElement.remove();
         updateTaskCounts();
-    });
+
+        // EventListener pour supprimer la tâche
+        taskElement.querySelector(".delete-task").addEventListener("click", () => {
+            taskElement.remove();
+            updateTaskCounts();
+        });
+
+        // EventListener pour éditer la tâche
+        taskElement.querySelector(".edit-task").addEventListener("click", () => {
+            isEditMode = true;
+            Tcurrent = taskElement;
+            modal.classList.remove("hidden");
+
+            document.getElementById("task-title").value = title;
+            document.getElementById("task-date").value = date;
+            document.getElementById("task-priority").value = priority;
+            document.getElementById("task-category").value = category;
+            document.getElementById("task-description").value = description;
+        });
+    }
+    //pour faire reset a formulaire
+    addForm.reset();
+    modal.classList.add("hidden");
 });
