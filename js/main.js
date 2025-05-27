@@ -5,7 +5,7 @@ const toDoList = document.getElementById("to-do-list");
 const modal = document.getElementById("modal");
 const inProgressList = document.getElementById("in-progress-list");
 const doneList = document.getElementById("done-list");
-
+const serch=document.getElementById("serch");
 const toDoCount = document.getElementById("to-do-count");
 const inProgressCount = document.getElementById("in-progress-count");
 const doneCount = document.getElementById("done-count");
@@ -23,6 +23,29 @@ addBtn.addEventListener("click", () => {
 cancelBtn.addEventListener("click", () => {
     modal.classList.add("hidden");
 });
+
+serch.addEventListener("input", search);
+
+function search() {
+    const query = serch.value.toLowerCase();
+
+    const allTasks = [
+        ...toDoList.children,
+        ...inProgressList.children,
+        ...doneList.children
+    ];
+
+    allTasks.forEach(task => {
+        const title = task.querySelector(".task-title").textContent.toLowerCase();
+        const desc = task.querySelector(".task-desc").textContent.toLowerCase();
+
+        if (title.includes(query) || desc.includes(query)) {
+            task.style.display = "block";
+        } else {
+            task.style.display = "none";
+        }
+    });
+}
 
 function updateTaskCounts() {
     toDoCount.textContent = `(${toDoList.childElementCount})`;
